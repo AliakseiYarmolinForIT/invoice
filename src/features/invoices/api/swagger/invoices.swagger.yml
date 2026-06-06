@@ -1,0 +1,157 @@
+openapi: 3.0.0
+info:
+  title: API Documentation
+  version: 1.0.0
+  description: Invoice API documentation
+
+tags:
+  - name: Invoices
+    description: API for managing invoices
+
+paths:
+  /api/invoices/{id}:
+    get:
+      summary: Get invoice by id
+      tags: [Invoices]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The unique identifier of the invoice
+          schema:
+            type: string
+            example: 507f1f77bcf86cd799439011
+      responses:
+        200:
+          description: The requested invoice
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvoiceViewModel"
+        404:
+          description: Invoice not found
+  /api/invoices:
+    post:
+      summary: Add a new invoice
+      tags: [Invoices]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InvoiceInputDto"
+      responses:
+        201:
+          description: The invoice was successfully created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvoiceViewModel"
+        400:
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationErrorResponse"
+  /api/invoices/webhook:
+    post:
+      summary: Process invoice webhook
+      tags: [Invoices]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WebhookInputDto"
+      responses:
+        200:
+          description: The webhook was successfully processed
+        400:
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationErrorResponse"
+
+components:
+  schemas:
+    InvoiceViewModel:
+      type: object
+      required:
+        - id
+        - amount
+        - fee
+        - amountToReceive
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the invoice
+          example: 507f1f77bcf86cd799439011
+        amount:
+          type: number
+          description: Invoice amount
+          example: 100
+        fee:
+          type: number
+          description: Invoice fee
+          example: 5
+        amountToReceive:
+          type: number
+          description: Invoice amount to receive
+          example: 95
+    InvoiceInputDto:
+      type: object
+      required:
+        - amount
+        - currency
+        - merchantId
+      properties:
+        amount:
+          type: number
+          description: Invoice amount
+          example: 100
+        currency:
+          type: string
+          description: Invoice currency
+          enum:
+            - usd
+            - rub
+            - byn
+          example: usd
+        merchantId:
+          type: string
+          description: The unique identifier of the merchant
+          example: 507f1f77bcf86cd799439011
+    WebhookInputDto:
+      type: object
+      required:
+        - invoiceId
+        - status
+      properties:
+        invoiseId:
+          type: string
+          description: The unique identifier of the invoice
+          example: 507f1f77bcf86cd799439011
+        status:
+          type: string
+          description: Webhook invoice status
+          enum:
+            - paid
+            - failed
+          example: paid
+    ValidationError:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+        message:
+          type: string
+          example: Invalid name
+    ValidationErrorResponse:
+      type: object
+      properties:
+        errorMessages:
+          type: array
+          items:
+            $ref: "#/components/schemas/ValidationError"

@@ -1,0 +1,40 @@
+# Invoice API
+
+API для управления инвойсами и обработки вебхуков от платежных систем.
+
+## 🚀 Технологии
+
+- Node.js
+- Express
+- TypeScript
+- MongoDB + Mongoose
+- InversifyJS (DI)
+- Swagger (документация API)
+
+## 📦 Установка
+
+# Клонировать репозиторий
+
+git clone <url>
+
+# Установить зависимости
+
+pnpm install
+
+# Создать и запустить контейнер для mongodb
+
+docker-compose up -d
+
+# В первом терминале - компиляция TypeScript
+
+pnpm run watch
+
+# Во втором терминале - запуск сервера
+
+pnpm run dev
+
+# Сервер запустится на http://localhost:3000
+
+# Swagger доступен по адресу http://localhost:3000/swagger
+
+# Тесты, увы, выполнить не успел

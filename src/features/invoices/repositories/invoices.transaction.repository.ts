@@ -6,7 +6,7 @@ import {
   InvoiceModel,
   InvoiceStatusEnum,
 } from "../domain/invoice-entity";
-import { UpdateInvoiceDto } from "../api/input-model/update-invoice.dto";
+import { UpdateInvoiceDto } from "../api/input-models/update-invoice.dto";
 
 @injectable()
 export class InvoicesTransactionRepository {

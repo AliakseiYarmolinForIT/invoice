@@ -1,8 +1,8 @@
 import "reflect-metadata";
 import { inject, injectable } from "inversify";
 import { InvoicesTransactionRepository } from "../repositories/invoices.transaction.repository";
-import { UpdateInvoiceDto } from "../api/input-model/update-invoice.dto";
-import { CreateInvoiceDto } from "../api/input-model/create-invoice.dto";
+import { UpdateInvoiceDto } from "../api/input-models/update-invoice.dto";
+import { CreateInvoiceDto } from "../api/input-models/create-invoice.dto";
 import { InvoiceModel } from "../domain/invoice-entity";
 
 @injectable()

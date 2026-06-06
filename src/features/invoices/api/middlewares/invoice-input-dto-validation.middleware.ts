@@ -1,6 +1,6 @@
 import { body } from "express-validator";
 import { InvoiceCurrencyEnum } from "../../domain/invoice-entity";
-import { WebhookInvoiceStatusEnum } from "../input-model/update-invoice.dto";
+import { WebhookInvoiceStatusEnum } from "../input-models/update-invoice.dto";
 
 export const invoiceAmountValidationMiddleware = body("amount")
   .exists()

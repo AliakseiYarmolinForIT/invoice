@@ -61,28 +61,18 @@ export class InvoicesController {
     }
   }
 
+  // было принято допущение, что провайдер всегда получает статус 200, кроме случая возникновения ошибок при валидации заголовков (401).
   async processInvoiceWebhook(
     req: Request<{ id: string }, {}, UpdateInvoiceDto>,
     res: Response,
   ) {
     try {
-      const result = await this.invoiceService.updateInvoice({
+      await this.invoiceService.updateInvoice({
         invoiceId: req.body.invoiceId,
         status: req.body.status,
       });
 
-      if (!result) {
-        res
-          .status(HttpStatus.NotFound)
-          .send(
-            createErrorMessages([
-              { field: "id", message: "Invoice not found" },
-            ]),
-          );
-        return;
-      } else {
-        return res.sendStatus(HttpStatus.Ok);
-      }
+      return res.sendStatus(HttpStatus.Ok);
     } catch (e: unknown) {
       res.sendStatus(HttpStatus.InternalServerError);
     }

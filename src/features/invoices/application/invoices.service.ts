@@ -33,18 +33,13 @@ export class InvoicesService {
       merchantId,
     });
 
-    // тут должна быть реализована отправка запроса merchant'у, исходя из того, какое значение merchantId было получено.
+    // тут должна быть реализована отправка запроса провайдеру, исходя из того, какое значение merchantId было получено.
     // в ответ на этот запрос будет получаться webhook
 
     return await this.invoicesRepository.createInvoice(invoice);
   }
 
-  async updateInvoice({
-    invoiceId,
-    status,
-  }: UpdateInvoiceDto): Promise<boolean> {
+  async updateInvoice({ invoiceId, status }: UpdateInvoiceDto): Promise<void> {
     await this.invoicesRepository.updateInvoiceStatus({ invoiceId, status });
-
-    return true;
   }
 }

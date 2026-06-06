@@ -66,12 +66,8 @@ paths:
       responses:
         200:
           description: The webhook was successfully processed
-        400:
-          description: Validation error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ValidationErrorResponse"
+        401:
+          description: Unauthorized error
 
 components:
   schemas:

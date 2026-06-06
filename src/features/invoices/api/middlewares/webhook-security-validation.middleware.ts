@@ -23,26 +23,14 @@ export async function webhookSecurityValidationMiddleware(
       : req.headers["x-nonce"];
 
     if (!signature || !timestamp || !nonce) {
-      return res
-        .status(HttpStatus.BadRequest)
-        .send(
-          createErrorMessages([
-            { field: "headers", message: "Missing security headers" },
-          ]),
-        );
+      return res.status(HttpStatus.Unauthorized);
     }
 
     // проверка x-timestamp основана на допущении, что временная метка приходит в миллисекундах и время актуальности webhook'а составляет 5 минут
     const now = Date.now();
 
     if (now - parseInt(timestamp) > 300000) {
-      return res
-        .status(HttpStatus.BadRequest)
-        .send(
-          createErrorMessages([
-            { field: "headers", message: "Request too old" },
-          ]),
-        );
+      return res.status(HttpStatus.Unauthorized);
     }
 
     // запрос в бд для проверки уникальности x-nonce выполнен в обход dal
@@ -64,13 +52,7 @@ export async function webhookSecurityValidationMiddleware(
       .digest("hex");
 
     if (signature !== expectedSignature) {
-      return res
-        .status(HttpStatus.BadRequest)
-        .send(
-          createErrorMessages([
-            { field: "headers", message: "Invalid signature" },
-          ]),
-        );
+      return res.status(HttpStatus.Unauthorized);
     }
 
     await NonceModel.create({ nonce });

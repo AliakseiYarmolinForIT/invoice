@@ -1,6 +1,5 @@
 import * as mongoose from "mongoose";
 import { HydratedDocument, model, Model } from "mongoose";
-// import { WebhookInvoiceStatusEnum } from "../api/input-model/update-invoice.dto";
 
 export enum InvoiceCurrencyEnum {
   USD = "usd",
@@ -25,18 +24,13 @@ export type Invoice = {
   updatedAt: Date;
 };
 
-// type InvoiceMethods = typeof invoiceMethods;
 type InvoiceStatics = typeof invoiceStatics;
 
-type InvoiceModel = Model<Invoice /* , {}, InvoiceMethods */> & InvoiceStatics;
+type InvoiceModel = Model<Invoice> & InvoiceStatics;
 
-export type InvoiceDocument = HydratedDocument<Invoice /* , InvoiceMethods */>;
+export type InvoiceDocument = HydratedDocument<Invoice>;
 
-const invoiceSchema = new mongoose.Schema<
-  Invoice,
-  InvoiceModel /* ,
-  InvoiceMethods */
->(
+const invoiceSchema = new mongoose.Schema<Invoice, InvoiceModel>(
   {
     amount: { type: Number, required: true },
     fee: { type: Number, required: true },
@@ -47,17 +41,6 @@ const invoiceSchema = new mongoose.Schema<
   },
   { timestamps: true },
 );
-
-// const invoiceMethods = {
-//   changeInvoiceStatus({ status }: { status: WebhookInvoiceStatusEnum }) {
-//     const statusMap = {
-//       [WebhookInvoiceStatusEnum.PAID]: InvoiceStatusEnum.PAID,
-//       [WebhookInvoiceStatusEnum.FAILED]: InvoiceStatusEnum.FAILED,
-//     };
-
-//     (this as InvoiceDocument).status = statusMap[status];
-//   },
-// };
 
 const invoiceStatics = {
   createInvoice({
@@ -85,7 +68,6 @@ const invoiceStatics = {
   },
 };
 
-// invoiceSchema.methods = invoiceMethods;
 invoiceSchema.statics = invoiceStatics;
 
 export const InvoiceModel = model<Invoice, InvoiceModel>(
